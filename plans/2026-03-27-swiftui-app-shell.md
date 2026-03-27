@@ -1,7 +1,7 @@
 # 2026-03-27-swiftui-app-shell
 
 Status: awaiting-plan-review
-assigned-to: praxis
+assigned-to: theorie
 
 ## Summary
 

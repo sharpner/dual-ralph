@@ -1,6 +1,6 @@
 # 2026-03-27-shape-linter
 
-Status: awaiting-plan-review
+Status: implementing
 assigned-to: praxis
 
 ## Summary
