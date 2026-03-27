@@ -19,14 +19,14 @@ ralph \
   \`\`\`
   # YYYY-MM-DD-short-slug
 
-  Status: <draft|awaiting-opus-review|approved|implementing|awaiting-implementation-review|ci-blocked|done>
+  Status: <draft|awaiting-plan-review|approved|implementing|awaiting-implementation-review|ci-blocked|done>
   assigned-to: <$PLANNER_LABEL|$REVIEWER_LABEL>
   \`\`\`
 
   When to use which value:
-  - You create a plan → Status: awaiting-opus-review, assigned-to: $REVIEWER_LABEL
+  - You create a plan → Status: awaiting-plan-review, assigned-to: $REVIEWER_LABEL
   - You finish implementing → Status: awaiting-implementation-review, assigned-to: $REVIEWER_LABEL
-  - You revise a plan → Status: awaiting-opus-review, assigned-to: $REVIEWER_LABEL
+  - You revise a plan → Status: awaiting-plan-review, assigned-to: $REVIEWER_LABEL
   - CI fails (not your code) → Status: ci-blocked, assigned-to: $REVIEWER_LABEL
   - $REVIEWER_LABEL gives you work back → Status: approved or implementing, assigned-to: $PLANNER_LABEL
 
@@ -61,7 +61,7 @@ ralph \
   Priority 3 — Revise plan:
   If latest review has Decision: changes-requested (plan review):
      - address all findings explicitly in ## Change Log
-     - set in plan: Status: awaiting-opus-review, assigned-to: $REVIEWER_LABEL
+     - set in plan: Status: awaiting-plan-review, assigned-to: $REVIEWER_LABEL
 
   Priority 4 — Write next feature plan:
   If ALL plans with assigned-to: $PLANNER_LABEL have already been handed to $REVIEWER_LABEL
@@ -69,7 +69,7 @@ ralph \
      - read $VISION_FILE and $AGENTS_FILE
      - choose the next meaningful slice according to the vision
      - write .workflow/user-input/<task-id>.md and .workflow/plans/<task-id>.md
-     - set in plan: Status: awaiting-opus-review, assigned-to: $REVIEWER_LABEL
+     - set in plan: Status: awaiting-plan-review, assigned-to: $REVIEWER_LABEL
      - You may prepare multiple plans in parallel!
 
   BUG REPORTS: If you find a bug you cannot fix:

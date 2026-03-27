@@ -20,27 +20,28 @@ Report what you found to the user before proceeding.
 Based on what you found, ask these questions (skip any you can already answer from the repo):
 
 1. **What is this project?** One sentence — what does it do, who is it for?
-2. **What is the current goal?** What should Codex work on first? What's the vision for the next weeks/months?
+2. **What is the current goal?** What should the planner work on first? What's the vision for the next weeks/months?
 3. **What are the hard constraints?** Architecture rules, forbidden patterns, non-negotiable quality standards.
 4. **What is the test command?** What command runs tests locally without network access?
-5. **Are there areas Codex should NOT touch?** Protected files, stable modules, external integrations.
+5. **Are there areas the planner should NOT touch?** Protected files, stable modules, external integrations.
+6. **Which agents do you want to use?** Default is Codex (planner) + Claude Code (reviewer). Override via `PLANNER_AGENT` / `REVIEWER_AGENT` in config.sh.
 
 ## Step 3: Create the Files
 
 Based on the investigation and answers, create or update these files:
 
 ### VISION.md (in repo root)
-This is what Codex reads to plan features. It should contain:
+This is what the planner reads to plan features. It should contain:
 - Project purpose (1 paragraph)
 - Current milestone / focus area
 - Concrete feature goals (ordered by priority)
 - What "done" looks like for each goal
 - What is explicitly NOT a goal right now
 
-Keep it short and actionable. Codex reads this every iteration — brevity matters.
+Keep it short and actionable. The planner reads this every iteration — brevity matters.
 
 ### AGENTS.md (in repo root)
-This is what both Codex and Claude read before every action. It should contain:
+This is what both agents read before every action. It should contain:
 - Project state (what works today, what doesn't)
 - Architecture boundaries (what's allowed, what's forbidden)
 - Relevant paths (where to find what)
@@ -50,35 +51,36 @@ This is what both Codex and Claude read before every action. It should contain:
 Pull as much as possible from existing docs. Don't invent constraints — ask the user.
 
 ### CLAUDE.md (in repo root)
-Claude's role definition. Start with this template and adapt:
+The reviewer's role definition. Start with this template and adapt (replace `<reviewer-label>` and `<planner-label>` with values from config.sh):
 
 ```markdown
 # CLAUDE.md
 
 ## Role
-Claude is reviewer, bug-fixer, and feedback evaluator. Claude does NOT implement features.
+The reviewer reviews plans/implementations, fixes bugs, and evaluates feedback. The reviewer does NOT implement features.
 
 ## Routing
-Claude acts when a plan or bug is `assigned-to: claude`:
+The reviewer acts when a plan or bug is `assigned-to: <reviewer-label>`:
 
 Plans (in `.workflow/plans/`):
-- `awaiting-opus-review` → Write plan review
+- `awaiting-plan-review` → Write plan review
 - `awaiting-implementation-review` → Write implementation review
 - `ci-blocked` → Diagnose and fix blocker
 
 Bugs (in `.workflow/bugs/`):
-- `open` + `assigned-to: claude` → Fix bug, commit, set Status: fixed
+- `open` + `assigned-to: <reviewer-label>` → Fix bug, commit, set Status: fixed
 
 Feedback (in `.workflow/feedback/`):
-- Files without `## Claude Assessment` → Evaluate and incorporate
+- Files without `## Reviewer Assessment` → Evaluate and incorporate
 
-## What Claude does NOT do
+## What the reviewer does NOT do
 - Implement features
-- Change plan status (Codex does that, except: Claude may set ci-blocked → implementing after fixing)
+- Change plan status (the planner does that, except: reviewer may set ci-blocked → implementing after fixing)
 ```
 
 ### .workflow/config.sh
 Update with the correct values:
+- `PLANNER_AGENT` / `REVIEWER_AGENT` → which ralph agents to use (default: codex / claude-code)
 - `VISION_FILE` → path to VISION.md
 - `LOCAL_TEST_CMD` → the test command from Step 2
 - `CI_SYSTEM` → `github-actions` or `none`
@@ -99,7 +101,7 @@ Review the default criteria. Ask the user if they want to add project-specific c
 
 - Don't make up project goals — ask the user
 - Don't add constraints the user didn't mention
-- Keep VISION.md under 50 lines — Codex reads it every iteration
+- Keep VISION.md under 50 lines — the planner reads it every iteration
 - Keep AGENTS.md focused on facts, not aspirations
 - If the user already has good docs, reference them from VISION.md instead of duplicating
 - Commit all created files when done

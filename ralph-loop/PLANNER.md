@@ -39,7 +39,7 @@ The runner starts you in exactly one of these modes:
 Update the plan status to match the executed step:
 
 - `draft`
-- `awaiting-opus-review`
+- `awaiting-plan-review`
 - `approved`
 - `implementing`
 - `awaiting-implementation-review`

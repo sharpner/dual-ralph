@@ -21,5 +21,5 @@ It first requires a new plan iteration or delta plan. This is intentional — it
 
 ## Files
 
-- `CODEX.md`: Runner-specific planner instructions
+- `PLANNER.md`: Runner-specific planner instructions
 - `README.md`: This explanation

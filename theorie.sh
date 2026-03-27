@@ -8,8 +8,6 @@ if [ "$CI_SYSTEM" = "github-actions" ]; then
   CI_CHECK="check GitHub Actions CI status: gh run list --branch \$(git branch --show-current) --limit 1"
 fi
 
-# Capitalize reviewer label for section headers (Bash 3.2 compatible)
-REVIEWER_LABEL_CAP="$(printf '%s' "$REVIEWER_LABEL" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')"
 
 ralph \
   --agent "$REVIEWER_AGENT" \
@@ -22,14 +20,14 @@ ralph \
   ## IMPORTANT: assigned-to auto-correction
 
   $PLANNER_LABEL often forgets to set assigned-to: $REVIEWER_LABEL. Therefore:
-  - If a plan has Status: awaiting-opus-review or awaiting-implementation-review
+  - If a plan has Status: awaiting-plan-review or awaiting-implementation-review
     but assigned-to: $PLANNER_LABEL (or no assigned-to at all),
     correct assigned-to: $REVIEWER_LABEL, commit and push IMMEDIATELY.
   - Then handle the plan normally (see below).
 
   ## Plans (.workflow/plans/)
 
-  1. Status: awaiting-opus-review (regardless of assigned-to) → Plan review:
+  1. Status: awaiting-plan-review (regardless of assigned-to) → Plan review:
      - read .workflow/user-input/<task-id>.md, the plan, $ACCEPTANCE_CRITERIA and previous reviews
      - write .workflow/reviews/<task-id>-plan-rN.md (N = next number)
      - list concrete findings with severity and affected files
@@ -64,9 +62,9 @@ ralph \
 
   ## Feedback (.workflow/feedback/)
 
-  5. Check for files that don't have a ## $REVIEWER_LABEL_CAP Assessment yet → Process feedback:
+  5. Check for files that don't have a ## Reviewer Assessment yet → Process feedback:
      - read the feedback and affected areas
-     - assess relevance (high/medium/low) and write your assessment in ## $REVIEWER_LABEL_CAP Assessment
+     - assess relevance (high/medium/low) and write your assessment in ## Reviewer Assessment
      - if relevant: incorporate points into next $PLANNER_LABEL review or create a bug report
      - commit and push
 

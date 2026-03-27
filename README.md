@@ -50,15 +50,15 @@ Default: Planner=Codex, Reviewer=Claude. Override via `PLANNER_AGENT` / `REVIEWE
 .workflow/
 ├── config.sh                 # Project configuration (customize!)
 ├── acceptance-criteria.md    # Acceptance criteria (customize!)
-├── praxis.sh        # Codex loop entry point
-├── theorie.sh          # Claude loop entry point
+├── praxis.sh                # Planner loop entry point
+├── theorie.sh               # Reviewer loop entry point
 ├── agent-setup.md            # Interactive setup guide
 ├── templates/                # Copy-paste templates for all artifacts
 ├── plans/                    # Active feature plans
 │   └── resolved/             # Completed plans
 ├── reviews/                  # Review artifacts
 ├── user-input/               # User input per feature
-├── bugs/                     # Bug reports (Codex → Claude)
+├── bugs/                     # Bug reports (planner → reviewer)
 ├── feedback/                 # External feedback (Gemini etc.)
 ├── summaries/                # Completion summaries
 └── ralph-loop/               # Ralph runner docs
@@ -74,7 +74,7 @@ Default: Planner=Codex, Reviewer=Claude. Override via `PLANNER_AGENT` / `REVIEWE
 
 ```
 Planner writes plan
-  → awaiting-opus-review (assigned-to: reviewer)
+  → awaiting-plan-review (assigned-to: reviewer)
   → Reviewer reviews
     → approved → Planner implements
     → changes-requested → Planner revises plan
