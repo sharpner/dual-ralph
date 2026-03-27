@@ -1,7 +1,7 @@
 # 2026-03-27-template-session
 
 Status: awaiting-plan-review
-assigned-to: theorie
+assigned-to: praxis
 
 ## Summary
 
