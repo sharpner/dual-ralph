@@ -1,48 +1,48 @@
 # Dual-Ralph: AI Pairing Workflow
 
-A self-sustaining development loop between two AI agents — one plans+implements, the other reviews+fixes. Defaults to Codex+Claude, configurable via environment variables.
+A self-sustaining development loop between two Ralph loops: Praxis plans+implements, Theorie reviews+fixes.
 
-Clone this repo as `.workflow/` into your project and start both loops.
+Copy this repo as `.workflow/` into your project and start both loops.
 
 ## Quick Start
 
 ```bash
 # In your project repo:
-git clone git@github.com:sharpner/dual-ralph.git .workflow
+git clone git@github.com:sharpner/dual-ralph.git .workflow && rm -rf .workflow/.git
 ```
 
 Then tell your AI agent:
 
 > Read `.workflow/agent-setup.md` and help me set up the workflow.
 
-The agent will investigate your repo, ask a few questions, and create all needed files (`VISION.md`, `AGENTS.md`, `CLAUDE.md`, config). After setup:
+The agent will investigate your repo, ask a few questions, and create all needed files (`VISION.md`, `AGENTS.md`, `THEORIE.md`, config). After setup:
 
 ```bash
-# Start the planner loop (implements, plans, escalates):
+# Start the Praxis loop (implements, plans, escalates):
 .workflow/praxis.sh
 
-# Start the reviewer loop (reviews, fixes blockers, evaluates feedback):
+# Start the Theorie loop (reviews, fixes blockers, evaluates feedback):
 .workflow/theorie.sh
 
 # Optional: override agents via env
-PLANNER_AGENT=claude-code REVIEWER_AGENT=claude-code .workflow/praxis.sh
+PRAXIS_AGENT=my-agent THEORIE_AGENT=my-agent .workflow/praxis.sh
 ```
 
 ## Architecture
 
 ```
 ┌───────────┐  Plan    ┌─────────┐  Review  ┌────────────┐
-│  PLANNER  │─────────▶│  Plans  │─────────▶│  REVIEWER  │
+│  PRAXIS   │─────────▶│  Plans  │─────────▶│  THEORIE   │
 │  (Impl)   │◀─────────│         │◀─────────│  (Review)  │
 └─────┬─────┘  Code    └─────────┘ Approved  └─────┬──────┘
       │                                            │
-      │ Bug report ──▶ .workflow/bugs/ ──▶ Reviewer fixes
-      │ Escalation ──▶ ci-blocked ──▶ Reviewer fixes infra
+      │ Bug report ──▶ .workflow/bugs/ ──▶ Theorie fixes
+      │ Escalation ──▶ ci-blocked ──▶ Theorie fixes infra
       │                                            │
       └──── Feedback ◀── .workflow/feedback/ ◀─────┘
 ```
 
-Default: Planner=Codex, Reviewer=Claude. Override via `PLANNER_AGENT` / `REVIEWER_AGENT`.
+Configure the runtime agents via `PRAXIS_AGENT` / `THEORIE_AGENT`.
 
 ## Directory Structure
 
@@ -50,15 +50,15 @@ Default: Planner=Codex, Reviewer=Claude. Override via `PLANNER_AGENT` / `REVIEWE
 .workflow/
 ├── config.sh                 # Project configuration (customize!)
 ├── acceptance-criteria.md    # Acceptance criteria (customize!)
-├── praxis.sh                # Planner loop entry point
-├── theorie.sh               # Reviewer loop entry point
+├── praxis.sh                # Praxis loop entry point
+├── theorie.sh               # Theorie loop entry point
 ├── agent-setup.md            # Interactive setup guide
 ├── templates/                # Copy-paste templates for all artifacts
 ├── plans/                    # Active feature plans
 │   └── resolved/             # Completed plans
 ├── reviews/                  # Review artifacts
 ├── user-input/               # User input per feature
-├── bugs/                     # Bug reports (planner → reviewer)
+├── bugs/                     # Bug reports (Praxis → Theorie)
 ├── feedback/                 # External feedback (Gemini etc.)
 ├── summaries/                # Completion summaries
 └── ralph-loop/               # Ralph runner docs
@@ -67,40 +67,40 @@ Default: Planner=Codex, Reviewer=Claude. Override via `PLANNER_AGENT` / `REVIEWE
 ## Prerequisites
 
 - **[open-ralph-wiggum](https://github.com/Th0rgal/open-ralph-wiggum)** — The `ralph` CLI that runs the agent loops. Install via `npm install -g @th0rgal/ralph-wiggum`.
-- **At least one ralph-compatible agent** installed (Codex, Claude Code, or any other `ralph --agent` target).
+- **At least one ralph-compatible agent** installed for each loop (or one shared agent you run in both loops).
 - **Git** — Both loops commit and push via git.
 
 ## Plan Lifecycle
 
 ```
-Planner writes plan
-  → awaiting-plan-review (assigned-to: reviewer)
-  → Reviewer reviews
-    → approved → Planner implements
-    → changes-requested → Planner revises plan
-  → awaiting-implementation-review (assigned-to: reviewer)
-  → Reviewer reviews
+Praxis writes plan
+  → awaiting-plan-review (assigned-to: theorie)
+  → Theorie reviews
+    → approved → Praxis implements
+    → changes-requested → Praxis revises plan
+  → awaiting-implementation-review (assigned-to: theorie)
+  → Theorie reviews
     → approved → plans/resolved/ ✓
-    → changes-requested → Planner iterates
+    → changes-requested → Praxis iterates
 ```
 
 ## Escalation
 
-The planner has **no network access**. When local tests fail 3x and the problem is not in feature code:
+Praxis has **no network access**. When local tests fail 3x and the problem is not in feature code:
 
-1. Planner sets `Status: ci-blocked`, `assigned-to: <reviewer>`
-2. Reviewer checks CI, diagnoses, fixes infra
-3. Reviewer sets back to `awaiting-implementation-review` and performs review
+1. Praxis sets `Status: ci-blocked`, `assigned-to: <theorie>`
+2. Theorie checks CI, diagnoses, fixes infra
+3. Theorie sets back to `awaiting-implementation-review` and performs review
 
-**Important:** Reviewer must commit and push after every fix. Local changes that aren't pushed are invisible to the planner.
+**Important:** Theorie must commit and push after every fix. Local changes that aren't pushed are invisible to Praxis.
 
 ## Bug Reports
 
-Planner finds bug → `.workflow/bugs/<date>-<name>.md` with `assigned-to: <reviewer>` → Reviewer fixes → `Status: fixed`
+Praxis finds bug → `.workflow/bugs/<date>-<name>.md` with `assigned-to: <theorie>` → Theorie fixes → `Status: fixed`
 
 ## Feedback
 
-External feedback (Gemini, manual reviews) → `.workflow/feedback/<date>-<source>-<topic>.md` → Reviewer evaluates and incorporates into next review.
+External feedback (Gemini, manual reviews) → `.workflow/feedback/<date>-<source>-<topic>.md` → Theorie evaluates and incorporates into the next review.
 
 ## Configuration
 
@@ -108,13 +108,13 @@ Edit `config.sh` for your project:
 
 | Variable | Default | Description |
 |---|---|---|
-| `PLANNER_AGENT` | `codex` | Ralph agent for planner role (`--agent` flag) |
-| `REVIEWER_AGENT` | `claude-code` | Ralph agent for reviewer role (`--agent` flag) |
-| `PLANNER_LABEL` | auto from agent | Routing label in plan files (`assigned-to:`) |
-| `REVIEWER_LABEL` | auto from agent | Routing label in plan files (`assigned-to:`) |
-| `VISION_FILE` | `./VISION.md` | Planner reads this for feature planning |
+| `PRAXIS_AGENT` | required | Ralph agent for the Praxis loop (`--agent` flag) |
+| `THEORIE_AGENT` | required | Ralph agent for the Theorie loop (`--agent` flag) |
+| `PRAXIS_LABEL` | `praxis` | Routing label in plan files (`assigned-to:`) |
+| `THEORIE_LABEL` | `theorie` | Routing label in plan files (`assigned-to:`) |
+| `VISION_FILE` | `./VISION.md` | Praxis reads this for feature planning |
 | `AGENTS_FILE` | `./AGENTS.md` | Architecture boundaries, paths, rules |
-| `CLAUDE_FILE` | `./CLAUDE.md` | Reviewer-specific routing rules |
+| `THEORIE_FILE` | `./THEORIE.md` | Theorie-specific routing rules |
 | `LOCAL_TEST_CMD` | `go test ./...` | Local test command (no network needed) |
 | `ACCEPTANCE_CRITERIA` | `./.workflow/acceptance-criteria.md` | Review criteria |
 | `CI_SYSTEM` | `github-actions` | CI provider (`none` to disable) |
@@ -122,37 +122,34 @@ Edit `config.sh` for your project:
 ### Agent Configuration Examples
 
 ```bash
-# Default: Codex plans, Claude reviews
-PLANNER_AGENT=codex REVIEWER_AGENT=claude-code
+# Distinct agents for each loop
+PRAXIS_AGENT=my-planning-agent THEORIE_AGENT=my-review-agent
 
-# Only have Claude? Both roles run as Claude:
-PLANNER_AGENT=claude-code REVIEWER_AGENT=claude-code
-
-# Only have Codex? Both roles run as Codex:
-PLANNER_AGENT=codex REVIEWER_AGENT=codex
+# Same agent for both loops
+PRAXIS_AGENT=my-agent THEORIE_AGENT=my-agent
 
 # Custom agent names:
-PLANNER_AGENT=my-agent REVIEWER_AGENT=my-other-agent
+PRAXIS_AGENT=team-alpha THEORIE_AGENT=team-beta
 ```
 
 ## Target Repo Requirements
 
-1. **`VISION.md`** — What should the project achieve? The planner plans features from this.
+1. **`VISION.md`** — What should the project achieve? Praxis plans features from this.
 2. **`AGENTS.md`** — Architecture boundaries, relevant paths, change rules.
-3. **`CLAUDE.md`** — Reviewer routing (reviewer, bug-fixer, feedback evaluator).
+3. **`THEORIE.md`** — Theorie routing (reviews, bug fixes, feedback evaluation).
 4. **Local tests** that run without network access.
 5. **CI pipeline** (optional) — GitHub Actions, GitLab CI, etc.
 
 ## Roles
 
-### Planner (default: Codex)
+### Praxis
 - Plans features based on vision document
 - Implements against approved plans
 - Always commits and pushes
-- Escalates infra problems to reviewer
+- Escalates infra problems to Theorie
 - Writes bug reports for problems it can't solve
 
-### Reviewer (default: Claude)
+### Theorie
 - Reviews plans and implementations
 - Fixes CI blockers and infra problems
 - Evaluates external feedback
@@ -171,20 +168,8 @@ PLANNER_AGENT=my-agent REVIEWER_AGENT=my-other-agent
 ### What Works
 
 - **Enforced reviews catch real bugs.** Forward-declaration errors, CI blockers, refcount bugs — all caught in the review loop, not in production code.
-- **Escalation path is critical.** Without `ci-blocked → reviewer fixes`, the planner spins endlessly documenting the error instead of solving it.
-- **Plan in parallel while blocked.** The planner should plan new features while waiting on CI/review. Otherwise the entire workflow stalls.
-- **Reviewer must commit and push.** If the reviewer only changes files locally, the planner never sees the changes.
-- **External feedback (Gemini) is valuable.** The reviewer evaluates and incorporates relevant points into reviews. No special status needed — just check if the assessment section is missing.
+- **Escalation path is critical.** Without `ci-blocked → Theorie fixes`, Praxis spins endlessly documenting the error instead of solving it.
+- **Plan in parallel while blocked.** Praxis should plan new features while waiting on CI/review. Otherwise the entire workflow stalls.
+- **Theorie must commit and push.** If Theorie only changes files locally, Praxis never sees the changes.
+- **External feedback (Gemini) is valuable.** Theorie evaluates and incorporates relevant points into reviews. No special status needed — just check if the assessment section is missing.
 - **The workflow improves itself.** Early reviews were unstructured, later ones followed clear format. Quality increases with each cycle.
-
-### What Does NOT Work
-
-- **Heavy local tests in planner sandbox.** MLX, Docker, Metal — none of these run in a sandboxed planner. Local tests must be lightweight, CI runs remotely.
-- **`gh` CLI in planner.** No network = no `gh`. Planner pushes blind, reviewer checks CI.
-- **Web searches for CI status.** The planner tries to crawl google/github.com when `gh` fails. Explicitly forbid this.
-- **Status without exit path.** Never introduce a status that has no way out. Always define a clear path back.
-- **Manual intervention from monitoring session.** The loop must be self-sustaining. Otherwise changes sit locally and the loop never sees them.
-
-### Typical Throughput
-
-~1 feature per hour after workflow stabilization. The first hour goes to setup.

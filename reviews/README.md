@@ -1,6 +1,6 @@
 # Reviews
 
-This folder contains all reviewer reviews.
+This folder contains all Theorie reviews.
 
 Two review types exist:
 
@@ -22,6 +22,6 @@ See `templates/review.md` for the template.
 
 - Every finding is concrete and references a file, behavior, or test gap
 - `approved` without clear rationale is invalid
-- `changes-requested` needs concrete points that the planner can act on
+- `changes-requested` needs concrete points that Praxis can act on
 - `changes-requested` forces a new plan revision or delta plan before the next implementation round
 - New review round means new file with incremented revision number

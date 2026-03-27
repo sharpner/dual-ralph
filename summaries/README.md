@@ -2,7 +2,7 @@
 
 This folder contains the completion summary per task.
 
-Written by the planner after the implementation is reviewed and the task is closed.
+Written by Praxis after the implementation is reviewed and the task is closed.
 
 ## File
 
@@ -15,7 +15,7 @@ summaries/<task-id>.md
 ```md
 # <task-id>
 
-Owner: planner | reviewer
+Owner: praxis | theorie
 Status: done | blocked
 
 ## Delivered

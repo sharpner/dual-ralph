@@ -12,9 +12,9 @@ What was criticized or suggested?
 - pkg/...
 - ...
 
-## Reviewer Assessment
+## Theorie Assessment
 
-(filled by reviewer)
+(filled by theorie)
 
 - Relevance: high | medium | low
 - Assessment: ...

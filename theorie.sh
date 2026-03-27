@@ -10,19 +10,19 @@ fi
 
 
 ralph \
-  --agent "$REVIEWER_AGENT" \
+  --agent "$THEORIE_AGENT" \
   --allow-all \
   --no-commit \
   "Check ALL plans in .workflow/plans/, all bugs in .workflow/bugs/, and feedback in .workflow/feedback/.
 
-  Read $AGENTS_FILE and $CLAUDE_FILE before every action.
+  Read $AGENTS_FILE and $THEORIE_FILE before every action.
 
   ## IMPORTANT: assigned-to auto-correction
 
-  $PLANNER_LABEL often forgets to set assigned-to: $REVIEWER_LABEL. Therefore:
+  $PRAXIS_LABEL often forgets to set assigned-to: $THEORIE_LABEL. Therefore:
   - If a plan has Status: awaiting-plan-review or awaiting-implementation-review
-    but assigned-to: $PLANNER_LABEL (or no assigned-to at all),
-    correct assigned-to: $REVIEWER_LABEL, commit and push IMMEDIATELY.
+    but assigned-to: $PRAXIS_LABEL (or no assigned-to at all),
+    correct assigned-to: $THEORIE_LABEL, commit and push IMMEDIATELY.
   - Then handle the plan normally (see below).
 
   ## Plans (.workflow/plans/)
@@ -31,7 +31,7 @@ ralph \
      - read .workflow/user-input/<task-id>.md, the plan, $ACCEPTANCE_CRITERIA and previous reviews
      - write .workflow/reviews/<task-id>-plan-rN.md (N = next number)
      - list concrete findings with severity and affected files
-     - set assigned-to: $PLANNER_LABEL in the plan (do NOT change the status)
+     - set assigned-to: $PRAXIS_LABEL in the plan (do NOT change the status)
 
   2. Status: awaiting-implementation-review (regardless of assigned-to) → Implementation review:
      - read the plan, all previous reviews, $ACCEPTANCE_CRITERIA and the relevant code changes (git log, git diff)
@@ -39,12 +39,12 @@ ralph \
      - check all acceptance criteria explicitly
      - write .workflow/reviews/<task-id>-implementation-rN.md
      - if Decision: approved → move plan to .workflow/plans/resolved/
-     - set assigned-to: $PLANNER_LABEL in the plan (do NOT change the status)
+     - set assigned-to: $PRAXIS_LABEL in the plan (do NOT change the status)
 
-  3. Status: ci-blocked + assigned-to: $REVIEWER_LABEL → Resolve CI blocker:
+  3. Status: ci-blocked + assigned-to: $THEORIE_LABEL → Resolve CI blocker:
      - $CI_CHECK
      - if CI is already GREEN: the blocker is already resolved
-       → set Status: awaiting-implementation-review, assigned-to stays $REVIEWER_LABEL
+       → set Status: awaiting-implementation-review, assigned-to stays $THEORIE_LABEL
        → commit and push
        → immediately perform implementation review (see point 2)
      - if CI is RED: diagnose and fix the problem
@@ -54,7 +54,7 @@ ralph \
 
   ## Bugs (.workflow/bugs/)
 
-  4. Status: open + assigned-to: $REVIEWER_LABEL → Fix bug:
+  4. Status: open + assigned-to: $THEORIE_LABEL → Fix bug:
      - read the error analysis
      - diagnose and fix the bug
      - set Status: fixed
@@ -62,10 +62,10 @@ ralph \
 
   ## Feedback (.workflow/feedback/)
 
-  5. Check for files that don't have a ## Reviewer Assessment yet → Process feedback:
+  5. Check for files that don't have a ## Theorie Assessment yet → Process feedback:
      - read the feedback and affected areas
-     - assess relevance (high/medium/low) and write your assessment in ## Reviewer Assessment
-     - if relevant: incorporate points into next $PLANNER_LABEL review or create a bug report
+     - assess relevance (high/medium/low) and write your assessment in ## Theorie Assessment
+     - if relevant: incorporate points into next $PRAXIS_LABEL review or create a bug report
      - commit and push
 
   ## Idle

@@ -1,7 +1,7 @@
 # YYYY-MM-DD-short-slug
 
 Status: draft
-assigned-to: <planner-label>
+assigned-to: <praxis-label>
 
 ## Summary
 
@@ -37,4 +37,4 @@ What should be different after implementation? Visible proof?
 
 ## Approval Block
 
-(filled by reviewer)
+(filled by theorie)

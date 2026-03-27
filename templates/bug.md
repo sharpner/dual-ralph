@@ -1,7 +1,7 @@
 # short-description
 
 Status: open
-assigned-to: <reviewer-label>
+assigned-to: <theorie-label>
 
 ## Symptom
 
@@ -9,7 +9,7 @@ What happens? Error message, output, affected command.
 
 ## Analysis
 
-What has the planner already investigated? Root cause hypothesis.
+What has praxis already investigated? Root cause hypothesis.
 
 ## Affected Files
 

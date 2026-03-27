@@ -1,6 +1,6 @@
-# Ralph Loop Runner Instructions
+# Ralph Loop Praxis Instructions
 
-You are working in the Planner-Ralph-Loop for this repository.
+You are working in the Praxis-Ralph-Loop for this repository.
 
 ## Goal
 
@@ -11,7 +11,7 @@ Execute exactly the next meaningful step for the given task ID. No more, no less
 Always read:
 
 - `AGENTS.md`
-- `CLAUDE.md`
+- `THEORIE.md`
 - `.workflow/README.md`
 - `.workflow/user-input/<task-id>.md`
 - `.workflow/plans/<task-id>.md`, if it exists
