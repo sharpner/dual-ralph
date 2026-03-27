@@ -19,13 +19,13 @@ The agent will investigate your repo, ask a few questions, and create all needed
 
 ```bash
 # Start the planner loop (implements, plans, escalates):
-.workflow/planner.sh
+.workflow/praxis.sh
 
 # Start the reviewer loop (reviews, fixes blockers, evaluates feedback):
-.workflow/reviewer.sh
+.workflow/theorie.sh
 
 # Optional: override agents via env
-PLANNER_AGENT=claude-code REVIEWER_AGENT=claude-code .workflow/planner.sh
+PLANNER_AGENT=claude-code REVIEWER_AGENT=claude-code .workflow/praxis.sh
 ```
 
 ## Architecture
@@ -50,8 +50,8 @@ Default: Planner=Codex, Reviewer=Claude. Override via `PLANNER_AGENT` / `REVIEWE
 .workflow/
 ├── config.sh                 # Project configuration (customize!)
 ├── acceptance-criteria.md    # Acceptance criteria (customize!)
-├── planner.sh        # Codex loop entry point
-├── reviewer.sh          # Claude loop entry point
+├── praxis.sh        # Codex loop entry point
+├── theorie.sh          # Claude loop entry point
 ├── agent-setup.md            # Interactive setup guide
 ├── templates/                # Copy-paste templates for all artifacts
 ├── plans/                    # Active feature plans
