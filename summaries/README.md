@@ -2,7 +2,7 @@
 
 This folder contains the completion summary per task.
 
-Written by Codex after the implementation is reviewed and the task is closed.
+Written by the planner after the implementation is reviewed and the task is closed.
 
 ## File
 
@@ -15,7 +15,7 @@ summaries/<task-id>.md
 ```md
 # <task-id>
 
-Owner: Codex | Claude
+Owner: planner | reviewer
 Status: done | blocked
 
 ## Delivered

@@ -93,7 +93,7 @@ Review the default criteria. Ask the user if they want to add project-specific c
 1. Confirm all files exist: `VISION.md`, `AGENTS.md`, `CLAUDE.md`, `.workflow/config.sh`
 2. Run the test command once to verify it works
 3. Show the user a summary of what was configured
-4. Ask: "Ready to start the loops? Run `.workflow/codex-plan-work.sh` for Codex and `.workflow/claude-review.sh` for Claude."
+4. Ask: "Ready to start the loops? Run `.workflow/planner.sh` and `.workflow/reviewer.sh`."
 
 ## Important Notes
 

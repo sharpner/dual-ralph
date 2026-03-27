@@ -1,7 +1,7 @@
 # short-description
 
 Status: open
-assigned-to: claude
+assigned-to: <reviewer-label>
 
 ## Symptom
 
@@ -9,7 +9,7 @@ What happens? Error message, output, affected command.
 
 ## Analysis
 
-What has Codex already investigated? Root cause hypothesis.
+What has the planner already investigated? Root cause hypothesis.
 
 ## Affected Files
 

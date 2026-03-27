@@ -8,8 +8,11 @@ if [ "$CI_SYSTEM" = "github-actions" ]; then
   CI_CHECK="check GitHub Actions CI status: gh run list --branch \$(git branch --show-current) --limit 1"
 fi
 
+# Capitalize reviewer label for section headers (Bash 3.2 compatible)
+REVIEWER_LABEL_CAP="$(printf '%s' "$REVIEWER_LABEL" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')"
+
 ralph \
-  --agent claude-code \
+  --agent "$REVIEWER_AGENT" \
   --allow-all \
   --no-commit \
   "Check ALL plans in .workflow/plans/, all bugs in .workflow/bugs/, and feedback in .workflow/feedback/.
@@ -18,10 +21,10 @@ ralph \
 
   ## IMPORTANT: assigned-to auto-correction
 
-  Codex often forgets to set assigned-to: claude. Therefore:
+  $PLANNER_LABEL often forgets to set assigned-to: $REVIEWER_LABEL. Therefore:
   - If a plan has Status: awaiting-opus-review or awaiting-implementation-review
-    but assigned-to: codex (or Owner: Codex, or no assigned-to at all),
-    correct assigned-to: claude, commit and push IMMEDIATELY.
+    but assigned-to: $PLANNER_LABEL (or no assigned-to at all),
+    correct assigned-to: $REVIEWER_LABEL, commit and push IMMEDIATELY.
   - Then handle the plan normally (see below).
 
   ## Plans (.workflow/plans/)
@@ -30,7 +33,7 @@ ralph \
      - read .workflow/user-input/<task-id>.md, the plan, $ACCEPTANCE_CRITERIA and previous reviews
      - write .workflow/reviews/<task-id>-plan-rN.md (N = next number)
      - list concrete findings with severity and affected files
-     - set assigned-to: codex in the plan (do NOT change the status)
+     - set assigned-to: $PLANNER_LABEL in the plan (do NOT change the status)
 
   2. Status: awaiting-implementation-review (regardless of assigned-to) → Implementation review:
      - read the plan, all previous reviews, $ACCEPTANCE_CRITERIA and the relevant code changes (git log, git diff)
@@ -38,12 +41,12 @@ ralph \
      - check all acceptance criteria explicitly
      - write .workflow/reviews/<task-id>-implementation-rN.md
      - if Decision: approved → move plan to .workflow/plans/resolved/
-     - set assigned-to: codex in the plan (do NOT change the status)
+     - set assigned-to: $PLANNER_LABEL in the plan (do NOT change the status)
 
-  3. Status: ci-blocked + assigned-to: claude → Resolve CI blocker:
+  3. Status: ci-blocked + assigned-to: $REVIEWER_LABEL → Resolve CI blocker:
      - $CI_CHECK
      - if CI is already GREEN: the blocker is already resolved
-       → set Status: awaiting-implementation-review, assigned-to stays claude
+       → set Status: awaiting-implementation-review, assigned-to stays $REVIEWER_LABEL
        → commit and push
        → immediately perform implementation review (see point 2)
      - if CI is RED: diagnose and fix the problem
@@ -53,7 +56,7 @@ ralph \
 
   ## Bugs (.workflow/bugs/)
 
-  4. Status: open + assigned-to: claude → Fix bug:
+  4. Status: open + assigned-to: $REVIEWER_LABEL → Fix bug:
      - read the error analysis
      - diagnose and fix the bug
      - set Status: fixed
@@ -61,10 +64,10 @@ ralph \
 
   ## Feedback (.workflow/feedback/)
 
-  5. Check for files that don't have a ## Claude Assessment yet → Process feedback:
+  5. Check for files that don't have a ## $REVIEWER_LABEL_CAP Assessment yet → Process feedback:
      - read the feedback and affected areas
-     - assess relevance (high/medium/low) and write your assessment in ## Claude Assessment
-     - if relevant: incorporate points into next Codex review or create a bug report
+     - assess relevance (high/medium/low) and write your assessment in ## $REVIEWER_LABEL_CAP Assessment
+     - if relevant: incorporate points into next $PLANNER_LABEL review or create a bug report
      - commit and push
 
   ## Idle

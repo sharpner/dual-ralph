@@ -1,6 +1,6 @@
 # Ralph Loop Runner Instructions
 
-You are working in the Codex-Ralph-Loop for this repository.
+You are working in the Planner-Ralph-Loop for this repository.
 
 ## Goal
 

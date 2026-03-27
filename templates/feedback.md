@@ -12,9 +12,9 @@ What was criticized or suggested?
 - pkg/...
 - ...
 
-## Claude Assessment
+## Reviewer Assessment
 
-(filled by Claude)
+(filled by reviewer)
 
 - Relevance: high | medium | low
 - Assessment: ...
