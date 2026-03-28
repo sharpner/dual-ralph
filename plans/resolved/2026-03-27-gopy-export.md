@@ -1,7 +1,7 @@
 # 2026-03-27-gopy-export
 
 Status: awaiting-implementation-review
-assigned-to: theorie
+assigned-to: praxis
 
 ## Summary
 

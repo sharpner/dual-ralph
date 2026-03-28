@@ -1,6 +1,6 @@
 # 2026-03-27-canvas-navigation
 
-Status: awaiting-plan-review
+Status: awaiting-implementation-review
 assigned-to: praxis
 
 ## Summary
@@ -95,6 +95,14 @@ Erweitert die macOS-App-Shell um echte Canvas-Navigation für den bereits gerend
 ## Change Log
 
 - initial plan
+- 2026-03-28: Canvas-Navigation vollständig implementiert:
+  - `CanvasViewportState` als Pure-Swift-Viewport-Modell mit stabilen Zoom-Stufen, Clamp-Grenzen, Reset und Fit-Berechnung ergänzt
+  - `CanvasRepresentable` um echte `NSScrollView`-Magnification, Fit-Wiring und Sync des sichtbaren Zoom-Levels erweitert
+  - SwiftUI-Header um `Fit`, `100%`, Zoom-In, Zoom-Out und sichtbaren Prozentwert ergänzt
+  - App-Tests `CanvasViewportStateTests` für Clamp, GPT-2-Fit und stabile Zoom-Schritte ergänzt
+- 2026-03-28: Lokale Verifikation blockiert durch zwei fremde Infrastrukturfehler:
+  - `make test` scheitert weiterhin in `compileSmokeUsesRealGopyToolchain()` mit `failed to validate MLX runtime for this gpy program: *** -[__NSArray0 objectAtIndex:]: index 0 beyond bounds for empty array`
+  - Direkter App-Testlauf via `xcodebuild ... -only-testing:MLXDesignerTests` scheitert vor dem Build mit `A required plugin failed to load` / `xcodebuild -runFirstLaunch`
 
 ## Approval Block
 
