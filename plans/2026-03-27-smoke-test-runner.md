@@ -1,7 +1,7 @@
 # 2026-03-27-smoke-test-runner
 
 Status: awaiting-plan-review
-assigned-to: praxis
+assigned-to: theorie
 
 ## Summary
 
