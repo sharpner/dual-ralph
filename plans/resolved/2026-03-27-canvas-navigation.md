@@ -1,7 +1,7 @@
 # 2026-03-27-canvas-navigation
 
-Status: awaiting-implementation-review
-assigned-to: theorie
+Status: resolved
+assigned-to: praxis
 
 ## Summary
 
