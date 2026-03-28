@@ -1,7 +1,7 @@
 # 2026-03-27-gopy-export
 
-Status: implementing
-assigned-to: praxis
+Status: awaiting-implementation-review
+assigned-to: theorie
 
 ## Summary
 
@@ -98,7 +98,12 @@ Implement einen reinen Engine-Export nach `.gpy`, der eine validierte GPT-2-XL-`
 
 ## Change Log
 
-(initial plan)
+- 2026-03-27 Praxis: `GopyExporter` in `MLXDesignerEngine` implementiert. Der Export validiert Template-Constraints, resolved node bindings gegen den propagierten `ParamContext`, guard-failed bei fehlenden Bindings/unsupported node configuration und rendert deterministischen GPT-2-gopy-Code mit Config-, Block-, Model- und Trainings-Scaffold.
+- 2026-03-27 Praxis: Neue `GopyExporterTests` decken Erfolgsfall, fehlende Macros, fehlende Bindings, strukturell unerwartete Nodes, Constraint-Blocker und Shape-Blocker ab.
+- 2026-03-27 Praxis: Engine-Tests fachlich grün bis auf den verpflichtenden realen Compile-Smoke. `swift test --disable-sandbox`, `make test`, `gpyc doctor` und ein direkter Compile des bestehenden `../gopy/examples/transformer_slice/main.gpy` scheitern reproduzierbar außerhalb des Feature-Codes an der lokalen gopy-MLX-Runtime:
+  `failed to validate MLX runtime for this gpy program: mlx runtime probe failed: *** -[__NSArray0 objectAtIndex:]: index 0 beyond bounds for empty array`
+  `gopy doctor found issues`
+  Auch mit explizitem `GOPY_MLX_PYTHON_BIN=../gopy/.venv-mlx-bench/bin/python` bleibt der Fehler unverändert.
 
 ## Approval Block
 
