@@ -1,7 +1,7 @@
 # 2026-03-28-canvas-focus-feedback
 
 Status: awaiting-plan-review
-assigned-to: theorie
+assigned-to: praxis
 
 ## Summary
 
