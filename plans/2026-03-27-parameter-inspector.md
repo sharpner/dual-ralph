@@ -1,6 +1,6 @@
 # 2026-03-27-parameter-inspector
 
-Status: awaiting-plan-review
+Status: awaiting-implementation-review
 assigned-to: theorie
 
 ## Summary
@@ -78,3 +78,13 @@ Erweitert die geplante macOS-App-Shell um einen echten Parameter-Inspector, der 
 - App-State-/ViewModel-Tests für Editierfluss und Fehlerzustände
 - Integrationstests für Session-Bindung und Canvas-Datenrefresh
 - `make test` deckt Engine- plus App-Tests ab
+
+## Change Log
+
+- Implementiert: `AppModel` hält jetzt eine echte `TemplateSession`, rendert `GraphLayout` aus `session.resolvedParams` und routet Master-/Override-Änderungen ausschließlich über Session-Methoden.
+- Implementiert: Neuer nativer Inspector mit Master-/Derived-Sektionen, lokalem Parsing-Fehlerzustand, Lock/Unlock/Reset für `head_dim` und inline/globalen Diagnosen aus dem Session-Snapshot.
+- Implementiert: Neue App-Tests für Session-Bindung, Canvas-Refresh über Layout-Daten und Parse-Guarding; gemeinsamer Value-Formatter/Parser als eine Formatierungsquelle.
+- Fix nebenbei: `CanvasRepresentable` auf aktuelle `NSScrollView`-API (`magnify(toFit:)`, `setMagnification(_:centeredAt:)`) gebracht, damit reiner Swift-Typcheck wieder durchläuft.
+- Verifiziert: Reiner Swift-Typcheck der kompletten `MLXDesignerApp/Sources` läuft erfolgreich mit lokalem SDK und gebautem `MLXDesignerEngine`-Modul.
+- Blocker 1: `swift test --disable-sandbox` in `MLXDesignerEngine` scheitert weiterhin im bestehenden gopy-Smoke-Test `compileSmokeUsesRealGopyToolchain()` mit `failed to validate MLX runtime for this gpy program: *** -[__NSArray0 objectAtIndex:]: index 0 beyond bounds for empty array; run gpy doctor or reinstall with gpy install mlx`.
+- Blocker 2: `xcodebuild ... test CODE_SIGNING_ALLOWED=NO` scheitert vor dem Build weiterhin an der bestehenden Xcode-Installation: `Failed to load code for plug-in com.apple.dt.IDESimulatorFoundation ... A required plugin failed to load ... try running 'xcodebuild -runFirstLaunch'`.
